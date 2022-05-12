@@ -77,10 +77,14 @@ class _StartExerciseState extends State<StartExercise> {
                     SizedBox(
                       height: 30,
                       child: Row(
-                        children: const [
+                        children: [
                           IconButton(
-                              onPressed: null,
-                              icon: Icon(
+                              onPressed: () {
+                                Provider.of<TimerModel>(context, listen: false)
+                                    .ResetEverything(); //Resetting everything
+                                Navigator.pop(context);
+                              },
+                              icon: const Icon(
                                 Icons.arrow_back_ios,
                                 size: 30,
                                 color: Colors.black,
@@ -127,7 +131,7 @@ class _StartExerciseState extends State<StartExercise> {
                     : Container(
                         margin: const EdgeInsets.only(top: 50),
                         width: screenwidth,
-                        height: 200,
+                        height: MediaQuery.of(context).size.height * 0.25,
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
@@ -146,8 +150,8 @@ class _StartExerciseState extends State<StartExercise> {
                                           mainAxisAlignment:
                                               MainAxisAlignment.center,
                                           children: [
-                                            const Text("00",
-                                                style: TextStyle(
+                                            Text(myModel.setMin.toString(),
+                                                style: const TextStyle(
                                                     color: Colors.white,
                                                     fontSize: 40,
                                                     fontWeight:
@@ -158,7 +162,7 @@ class _StartExerciseState extends State<StartExercise> {
                                                     fontSize: 40,
                                                     fontWeight:
                                                         FontWeight.bold)),
-                                            Text(myModel.set.toString(),
+                                            Text(myModel.setSec.toString(),
                                                 style: const TextStyle(
                                                     color: Colors.white,
                                                     fontSize: 40,
@@ -178,6 +182,9 @@ class _StartExerciseState extends State<StartExercise> {
                                                 color: Colors.yellowAccent,
                                                 fontSize: 20,
                                                 fontWeight: FontWeight.bold)),
+                                        const SizedBox(
+                                          height: 30,
+                                        ),
                                         const Text("next set will start in ",
                                             style: TextStyle(
                                                 color: Colors.white,
@@ -185,11 +192,12 @@ class _StartExerciseState extends State<StartExercise> {
                                                 fontWeight: FontWeight.bold)),
                                         Padding(
                                           padding: const EdgeInsets.all(8.0),
-                                          child: Text(myModel.rest.toString(),
-                                              style: const TextStyle(
-                                                color: Colors.white,
-                                                fontSize: 20,
-                                              )),
+                                          child:
+                                              Text(myModel.restSec.toString(),
+                                                  style: const TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 20,
+                                                  )),
                                         )
                                       ],
                                     );
@@ -238,14 +246,14 @@ class _StartExerciseState extends State<StartExercise> {
                             color: const Color.fromARGB(255, 80, 80, 76)),
                         child: IconButton(
                           onPressed: (() {
-                            if (Provider.of<TimerModel>(context, listen: false)
-                                .isrest) {
-                              null;
-                            } else {
-                              Provider.of<TimerModel>(context, listen: false)
-                                  .changePause();
-                              setState(() {});
-                            }
+                            // if (Provider.of<TimerModel>(context, listen: false)
+                            //     .isrest) {
+                            //   null;
+                            // } else {
+                            Provider.of<TimerModel>(context, listen: false)
+                                .changePause();
+                            setState(() {});
+                            //}
                           }),
                           icon: Provider.of<TimerModel>(context, listen: false)
                                   .ispaused

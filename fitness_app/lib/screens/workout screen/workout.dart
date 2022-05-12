@@ -1,6 +1,11 @@
+import 'package:fitness_app/screens/add_workout/add_workout_screen.dart';
 import 'package:flutter/material.dart';
+import '../add_workout/listToShowWhileAdding.dart';
+import 'package:provider/provider.dart';
+import '../../providers/exercises.dart';
 
 import './widgets/listworkout.dart';
+import '../add_workout/add_repetition.dart';
 
 // ignore: camel_case_types
 class workoutScreen extends StatelessWidget {
@@ -13,7 +18,16 @@ class workoutScreen extends StatelessWidget {
     double screensize = MediaQuery.of(context).size.height;
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-          onPressed: () {},
+          onPressed: () {
+            toAddExercises
+                .clear(); //to clear the exercises that were there from the previous time
+            Provider.of<Exercises>(context, listen: false).setList(Provider.of<
+                    Exercises>(context, listen: false)
+                .items); //assigning the exercise list back to the temporary exercise list
+            daysList = [0, 0, 0, 0, 0, 0, 0]; //reinitializing to all 0
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => AddWorkoutScreen()));
+          },
           child: Container(
             padding: const EdgeInsets.all(6),
             decoration: BoxDecoration(

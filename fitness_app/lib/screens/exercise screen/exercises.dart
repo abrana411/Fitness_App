@@ -1,10 +1,17 @@
+import 'package:fitness_app/data/exerciseItem.dart';
+import 'package:fitness_app/screens/add_exercise/add_exercise_screen.dart';
+import 'package:fitness_app/screens/navigaton.dart';
 import 'package:flutter/material.dart';
 
 import '../exercise screen/widges/listexercises.dart';
+import '../add_exercise/add_exercise_image.dart';
 
 // ignore: camel_case_types
 class ExercisesScreen extends StatelessWidget {
-  const ExercisesScreen({Key? key}) : super(key: key);
+  List<ExerciseItem> myexerList;
+  bool toShowAll;
+  ExercisesScreen({Key? key, required this.myexerList, required this.toShowAll})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -13,7 +20,13 @@ class ExercisesScreen extends StatelessWidget {
     double screensize = MediaQuery.of(context).size.height;
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-          onPressed: () {},
+          onPressed: () {
+            storedImage = null;
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const AddExerciseScreen()));
+          },
           child: Container(
             padding: const EdgeInsets.all(6),
             decoration: BoxDecoration(
@@ -46,20 +59,26 @@ class ExercisesScreen extends StatelessWidget {
           color: const Color(0XFF22314F),
           child: Column(
             children: [
-              SizedBox(
-                height: 30,
-                child: Row(
-                  children: const [
-                    IconButton(
-                        onPressed: null,
-                        icon: Icon(
-                          Icons.arrow_back_ios,
-                          color: Colors.white,
-                          size: 30,
-                        )),
-                  ],
-                ),
-              ),
+              // SizedBox(
+              //   height: 30,
+              //   child: Row(
+              //     children: [
+              //       IconButton(
+              //           onPressed: () {
+              //             Navigator.push(
+              //                 context,
+              //                 MaterialPageRoute(
+              //                     builder: (context) =>
+              //                         const navigationScreen()));
+              //           },
+              //           icon: const Icon(
+              //             Icons.arrow_back_ios,
+              //             color: Colors.white,
+              //             size: 30,
+              //           )),
+              //     ],
+              //   ),
+              // ),
               SizedBox(
                 height: 70,
                 child: Row(
@@ -85,7 +104,10 @@ class ExercisesScreen extends StatelessWidget {
                       borderRadius: BorderRadius.only(
                           topLeft: Radius.circular(20),
                           topRight: Radius.circular(20))),
-                  child: ExercisesList(),
+                  child: ExercisesList(
+                    MyExercises: myexerList,
+                    allExer: toShowAll,
+                  ),
                 ),
               ),
             ],

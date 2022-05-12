@@ -1,4 +1,8 @@
+import 'package:fitness_app/data/profiledata.dart';
+import 'package:fitness_app/providers/profileProvider.dart';
+import 'package:fitness_app/screens/add_profile/add_profile_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../Home screen/widgets/workouthome.dart';
 import './widgets/drawerhome.dart';
@@ -36,6 +40,8 @@ class Homescr extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    List<profileContent> usersDetails =
+        Provider.of<provideProfile>(context).item;
     double screenheight = MediaQuery.of(context).size.height;
     double screenwidth = MediaQuery.of(context).size.width;
     return Scaffold(
@@ -88,17 +94,19 @@ class Homescr extends StatelessWidget {
                       margin: EdgeInsets.only(left: screenwidth * 0.07),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        children: const [
-                          Text("Welcome Back",
+                        children: [
+                          const Text("Welcome Back",
                               style: TextStyle(
                                   color: Colors.white,
                                   fontSize: 14,
                                   fontWeight: FontWeight.bold)),
-                          Text("User's Name",
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 22,
-                                  fontWeight: FontWeight.bold)),
+                          usersDetails.isEmpty
+                              ? Container()
+                              : Text(usersDetails[0].userName,
+                                  style: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 22,
+                                      fontWeight: FontWeight.bold)),
                         ],
                       ),
                     ),
@@ -111,15 +119,52 @@ class Homescr extends StatelessWidget {
                         height: 80,
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(40)),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(40),
-                          child: Image.asset(
-                            "assets/images/try.png",
-                            height: double.infinity,
-                            fit: BoxFit.fill,
-                            width: double.infinity,
-                          ),
-                        ),
+                        child: usersDetails.isEmpty
+                            ? Stack(
+                                children: [
+                                  ClipRRect(
+                                    borderRadius: BorderRadius.circular(40),
+                                    child: Image.asset(
+                                      'assets/images/profile_image.png',
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                  Positioned(
+                                      bottom: -10,
+                                      child: TextButton(
+                                          onPressed: () => Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      const AddProfileScreen())),
+                                          child: Container(
+                                            padding: const EdgeInsets.all(10),
+                                            decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(30),
+                                                color: Colors.orange[700]),
+                                            child: const Text(
+                                              "ADD PROFILE",
+                                              style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 7,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                          )))
+                                ],
+                              )
+                            : ClipRRect(
+                                borderRadius: BorderRadius.circular(40),
+                                child: Image.file(usersDetails[0].profImage!,
+                                    fit: BoxFit.cover, errorBuilder:
+                                        (BuildContext context, Object exception,
+                                            StackTrace? stackTrace) {
+                                  return Image.asset(
+                                    'assets/images/exercise.png',
+                                    fit: BoxFit.cover,
+                                  );
+                                }),
+                              ),
                       ),
                     ),
                   ],
